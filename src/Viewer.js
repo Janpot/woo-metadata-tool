@@ -32,7 +32,7 @@ var Viewer = React.createClass({
         ].join('\n');
       }).join('\n');
     } else {
-      return '<!-- No input -->';
+      return '<!-- No input yet -->';
     }
   },
   copyToClipboard () {
@@ -48,12 +48,12 @@ var Viewer = React.createClass({
     var clipboardEnabled = this.props.jsonld.length > 0;
     return (
       <div>
-        <pre>
-          <code ref="code" className="language-markup">{this.renderMarkup()}</code>
-        </pre>
         <Button raised ripple onClick={this.copyToClipboard} disabled={!clipboardEnabled}>
           Copy to clipboard
         </Button>
+        <pre>
+          <code ref="code" className="language-markup">{this.renderMarkup()}</code>
+        </pre>
         <Snackbar
           action="Ok"
           onActionClick={this.closeNotification}
