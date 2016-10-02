@@ -68,7 +68,7 @@ var Viewer = React.createClass({
           onActionClick={this.closeNotification}
           active={this.state.showNotification}
           onTimeout={this.closeNotification}>
-            Markup copied to clipboard.
+            Your snippet has been copied to the clipboard.
         </Snackbar>
       </div>
     );
