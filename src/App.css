@@ -1,0 +1,17 @@
+.woo-icon.woo-github {
+  display: inline-block;
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+  background-image: url(./img/github-logo.svg);
+  background-size: 24px 24px;
+}
+
+.woo-icon.woo-woorank {
+  display: inline-block;
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+  background-image: url(./img/woorank-logo.svg);
+  background-size: 24px 24px;
+}
