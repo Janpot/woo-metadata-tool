@@ -8,18 +8,12 @@ import './App.css';
 var App = React.createClass({
   getInitialState: function() {
     return {
-      jsonld: {
-        "@context" : "http://schema.org",
-        "@type" : "Organization",
-        "name" : "ACME",
-        "url" : "https://www.acme.org",
-        "sameAs" : []
-      }
-    }
+      jsonld: []
+    };
   },
   onChange: function (newValues) {
     this.setState({
-      jsonld: Object.assign({}, this.state.jsonld, newValues)
+      jsonld: newValues
     });
   },
   render: function() {
@@ -38,7 +32,7 @@ var App = React.createClass({
         <Content>
           <div className="mdl-grid">
             <div className="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
-              <Editor name={this.state.jsonld.name} url={this.state.jsonld.url} onChange={this.onChange}/>
+              <Editor onChange={this.onChange}/>
             </div>
             <div className="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
               <Viewer className="mdl-cell mdl-cell--6-col" jsonld={this.state.jsonld}/>

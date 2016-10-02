@@ -24,8 +24,9 @@ var EditorUrlInput = props => {
 var Editor = React.createClass({
   getInitialState: function() {
     return {
-      name: this.props.name,
-      url: this.props.url,
+      name: this.props.name || 'ACME',
+      url: this.props.url || 'http://www.acme.org',
+      blog: '',
       facebook: '',
       twitter: '',
       yelp: '',
@@ -40,16 +41,30 @@ var Editor = React.createClass({
     });
   },
   generateJsonld: function () {
-    return {
-      name: this.state.name,
-      url: this.state.url,
-      sameAs: [
-        this.state.facebook,
-        this.state.twitter,
-        this.state.yelp,
-        this.state.foursquare
-      ].filter(x => x)
-    };
+    var result = [];
+    var sameAs = [
+      this.state.facebook,
+      this.state.twitter,
+      this.state.yelp,
+      this.state.foursquare
+    ].filter(x => x);
+    if (sameAs.length > 0) {
+      result.push({
+        "@context" : "http://schema.org",
+        "@type" : "Organization",
+        name: this.state.name,
+        url: this.state.url,
+        sameAs: sameAs
+      });
+    }
+    if (this.state.blog) {
+      result.push({
+        "@context" : "http://schema.org",
+        "@type" : "Blog",
+        url: this.state.blog
+      });
+    }
+    return result;
   },
   setProperty: function (name, value) {
     this.setState({ [name]: value }, function () {
@@ -66,6 +81,7 @@ var Editor = React.createClass({
       <form className="mdl-grid">
         <EditorInput label="The name of your organization" {...bindProperty('name')}/>
         <EditorUrlInput label="The url of your website" {...bindProperty('url')}/>
+        <EditorUrlInput label="The url of your blog" {...bindProperty('blog')}/>
         <EditorUrlInput label="The url of your Facebook page" {...bindProperty('facebook')}/>
         <EditorUrlInput label="The url of your Twitter page" {...bindProperty('twitter')}/>
         <EditorUrlInput label="The url of your Yelp page" {...bindProperty('yelp')}/>
