@@ -3,7 +3,19 @@ import Viewer from './Viewer';
 import Editor from './Editor';
 import { Layout, Header, Content, Navigation } from 'react-mdl';
 import './App.css';
+import queryString from 'query-string';
 
+function parseQuery () {
+  var { url } = queryString.parse(location.search);
+  if (url) {
+    url = /https?:\/\//.test(url) ? url : `http://${url}`;
+    var [ ,name ] = /https?:\/\/(?:www\.)?([^\.]+)/.exec(url) || [];
+    return { name, url };
+  }
+  return null;
+}
+
+var initialValues = parseQuery();
 
 var App = React.createClass({
   getInitialState: function() {
@@ -32,7 +44,7 @@ var App = React.createClass({
         <Content>
           <div className="mdl-grid">
             <div className="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
-              <Editor onChange={this.onChange}/>
+              <Editor {...initialValues} onChange={this.onChange}/>
             </div>
             <div className="mdl-cell mdl-cell--6-col mdl-cell--12-col-tablet">
               <Viewer className="mdl-cell mdl-cell--6-col" jsonld={this.state.jsonld}/>
