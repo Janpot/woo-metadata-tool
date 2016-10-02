@@ -1,11 +1,13 @@
 import React from 'react';
 import Prism from 'prismjs';
 import indent from 'indent';
+import Button from 'react-mdl/lib/Button';
+import Checkbox from 'react-mdl/lib/Checkbox';
+import Snackbar from 'react-mdl/lib/Snackbar';
+import clipboard from 'clipboard-js';
 import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
-import { Button, Checkbox, Snackbar } from 'react-mdl';
-import clipboard from 'clipboard-js';
 
 var Viewer = React.createClass({
   getInitialState () {

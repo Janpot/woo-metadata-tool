@@ -1,7 +1,7 @@
 import React from 'react';
 import Viewer from './Viewer';
 import Editor from './Editor';
-import { Layout, Header, Content, Navigation } from 'react-mdl';
+import { Layout, Header, Content, Navigation } from 'react-mdl/lib/Layout';
 import './App.css';
 import queryString from 'query-string';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Textfield } from 'react-mdl';
+import Textfield from 'react-mdl/lib/Textfield';
 
 var EditorInput = props => {
   return (
