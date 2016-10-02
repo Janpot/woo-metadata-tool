@@ -1,5 +1,7 @@
 # woo-metadata-tool
 
+Try [here](https://janpot.github.io/woo-metadata-tool/).
+
 Tool to generate jsonld markup to provide info about your website to tools like [WooRank](https://www.woorank.com).
 
 ## Available Scripts
