@@ -15,7 +15,7 @@ var EditorInput = props => {
 }
 
 var EditorUrlInput = props => {
-  var urlPattern = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/.source;
+  var urlPattern = /^[a-z][a-z\d.+-]*:\/*(?:[^:@]+(?::[^@]+)?@)?(?:[^\s:/?#]+|\[[a-f\d:]+\])(?::\d+)?(?:\/[^?#]*)?(?:\?[^#]*)?(?:#.*)?$/i.source;
   return (
     <EditorInput error="This is not a valid url" pattern={urlPattern} {...props}/>
   );
