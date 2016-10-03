@@ -42,6 +42,13 @@ var Editor = React.createClass({
   },
   generateJsonld: function () {
     var result = [];
+    if (this.state.blog) {
+      result.push({
+        "@context" : "http://schema.org",
+        "@type" : "Blog",
+        url: this.state.blog
+      });
+    }
     var sameAs = [
       this.state.facebook,
       this.state.twitter,
@@ -55,13 +62,6 @@ var Editor = React.createClass({
         name: this.state.name,
         url: this.state.url,
         sameAs: sameAs
-      });
-    }
-    if (this.state.blog) {
-      result.push({
-        "@context" : "http://schema.org",
-        "@type" : "Blog",
-        url: this.state.blog
       });
     }
     return result;
