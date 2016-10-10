@@ -28,6 +28,7 @@ var Editor = React.createClass({
       url: this.props.url || 'http://www.acme.org',
       blog: '',
       facebook: '',
+      googleplus: '',
       twitter: '',
       yelp: '',
       foursquare: ''
@@ -51,6 +52,7 @@ var Editor = React.createClass({
     }
     var sameAs = [
       this.state.facebook,
+      this.state.googleplus,
       this.state.twitter,
       this.state.yelp,
       this.state.foursquare
@@ -83,6 +85,7 @@ var Editor = React.createClass({
         <EditorUrlInput label="The url of your website" {...bindProperty('url')}/>
         <EditorUrlInput label="The url of your blog" {...bindProperty('blog')}/>
         <EditorUrlInput label="The url of your Facebook page" {...bindProperty('facebook')}/>
+        <EditorUrlInput label="The url of your Google+ page" {...bindProperty('googleplus')}/>
         <EditorUrlInput label="The url of your Twitter page" {...bindProperty('twitter')}/>
         <EditorUrlInput label="The url of your Yelp page" {...bindProperty('yelp')}/>
         <EditorUrlInput label="The url of your Foursquare page" {...bindProperty('foursquare')}/>
