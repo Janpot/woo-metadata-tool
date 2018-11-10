@@ -8,13 +8,13 @@
   },
   "homepage": "http://janpot.github.io/woo-metadata-tool",
   "dependencies": {
-    "clipboard-js": "^0.3.1",
+    "clipboard-js": "^0.3.6",
     "indent": "0.0.2",
-    "prismjs": "^1.5.1",
-    "query-string": "^4.2.3",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "react-mdl": "^1.7.2"
+    "prismjs": "^1.15.0",
+    "query-string": "^4.3.4",
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1",
+    "react-mdl": "^1.11.0"
   },
   "scripts": {
     "start": "react-scripts start",

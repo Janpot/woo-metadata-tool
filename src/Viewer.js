@@ -9,22 +9,29 @@ import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
 
-var Viewer = React.createClass({
-  getInitialState () {
-    return {
+class Viewer extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
       showNotification: false,
       minified: false
-    }
-  },
-  hightlight() {
+    };
+    this.copyToClipboard = this.copyToClipboard.bind(this);
+    this.closeNotification = this.closeNotification.bind(this);
+  }
+
+  hightlight () {
     Prism.highlightElement(this.refs.code, this.props.async);
-  },
-  componentDidMount() {
+  }
+
+  componentDidMount () {
     this.hightlight();
-  },
-  componentDidUpdate() {
+  }
+
+  componentDidUpdate () {
     this.hightlight();
-  },
+  }
+
   renderMarkup () {
     if (this.props.jsonld.length > 0) {
       var joinChar = this.state.minified ? '' : '\n';
@@ -39,34 +46,37 @@ var Viewer = React.createClass({
     } else {
       return '<!-- No input yet -->';
     }
-  },
+  }
+
   copyToClipboard () {
     return clipboard.copy(this.renderMarkup())
       .then(() => {
         this.setState({ showNotification: true });
       });
-  },
+  }
+
   closeNotification () {
     this.setState({ showNotification: false });
-  },
-  render: function() {
+  }
+
+  render () {
     var clipboardEnabled = this.props.jsonld.length > 0;
     return (
       <div>
-        <div className="mdl-layout__header-row">
-          <div className="mdl-layout-spacer"></div>
+        <div className='mdl-layout__header-row'>
+          <div className='mdl-layout-spacer' />
           <div style={{ marginRight: '10px' }}>
-            <Checkbox label="Minify" checked={this.state.minified} onChange={e => this.setState({ minified: e.target.checked })} />
+            <Checkbox label='Minify' checked={this.state.minified} onChange={e => this.setState({ minified: e.target.checked })} />
           </div>
           <Button raised ripple onClick={this.copyToClipboard} disabled={!clipboardEnabled}>
             Copy to clipboard
           </Button>
         </div>
         <pre>
-          <code ref="code" className="language-markup">{this.renderMarkup()}</code>
+          <code ref='code' className='language-markup'>{this.renderMarkup()}</code>
         </pre>
         <Snackbar
-          action="Ok"
+          action='Ok'
           onActionClick={this.closeNotification}
           active={this.state.showNotification}
           onTimeout={this.closeNotification}>
@@ -75,6 +85,6 @@ var Viewer = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default Viewer;

@@ -3,27 +3,28 @@ import Textfield from 'react-mdl/lib/Textfield';
 
 var EditorInput = props => {
   return (
-    <div className="mdl-cell mdl-cell--12-col">
+    <div className='mdl-cell mdl-cell--12-col'>
       <Textfield
-        className="mdl-textfield--full-width"
+        className='mdl-textfield--full-width'
         label={props.label}
-        floatingLabel={true}
+        floatingLabel
         {...props}
       />
     </div>
   );
-}
+};
 
 var EditorUrlInput = props => {
   var urlPattern = /^[a-z][a-z\d.+-]*:\/*(?:[^:@]+(?::[^@]+)?@)?(?:[^\s:/?#]+|\[[a-f\d:]+\])(?::\d+)?(?:\/[^?#]*)?(?:\?[^#]*)?(?:#.*)?$/i.source;
   return (
-    <EditorInput error="This is not a valid url" pattern={urlPattern} {...props}/>
+    <EditorInput error='This is not a valid url' pattern={urlPattern} {...props} />
   );
-}
+};
 
-var Editor = React.createClass({
-  getInitialState: function() {
-    return {
+class Editor extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
       name: this.props.name || 'ACME',
       url: this.props.url || 'http://www.acme.org',
       blog: '',
@@ -33,20 +34,24 @@ var Editor = React.createClass({
       yelp: '',
       foursquare: ''
     };
-  },
-  onChange: function (event) {
+    this.onChange = this.onChange.bind(this);
+    this.bindProperty = this.bindProperty.bind(this);
+  }
+
+  onChange (event) {
     var property = event.target.name;
     var value = event.target.value;
-    this.setState({ [property]: value }, function () {
-      this.props.onChange(this.state)
+    this.setState({ [property]: value }, () => {
+      this.props.onChange(this.state);
     });
-  },
-  generateJsonld: function () {
+  }
+
+  generateJsonld () {
     var result = [];
     if (this.state.blog) {
       result.push({
-        "@context" : "http://schema.org",
-        "@type" : "Blog",
+        '@context': 'http://schema.org',
+        '@type': 'Blog',
         url: this.state.blog
       });
     }
@@ -59,39 +64,44 @@ var Editor = React.createClass({
     ].filter(x => x);
     if (sameAs.length > 0) {
       result.push({
-        "@context" : "http://schema.org",
-        "@type" : "Organization",
+        '@context': 'http://schema.org',
+        '@type': 'Organization',
         name: this.state.name,
         url: this.state.url,
         sameAs: sameAs
       });
     }
     return result;
-  },
-  setProperty: function (name, value) {
-    this.setState({ [name]: value }, function () {
-      this.props.onChange(this.generateJsonld());
+  }
+
+  setProperty (name, value) {
+    this.setState({ [name]: value }, () => {
+      const jsonld = this.generateJsonld();
+      this.props.onChange(jsonld);
     });
-  },
-  render: function() {
-    var bindProperty = property => ({
+  }
+
+  bindProperty (property) {
+    return {
       value: this.state[property],
       onChange: e => this.setProperty(property, e.target.value)
-    });
+    };
+  }
 
+  render () {
     return (
-      <form className="mdl-grid">
-        <EditorInput label="The name of your organization" {...bindProperty('name')}/>
-        <EditorUrlInput label="The url of your website" {...bindProperty('url')}/>
-        <EditorUrlInput label="The url of your blog" {...bindProperty('blog')}/>
-        <EditorUrlInput label="The url of your Facebook page" {...bindProperty('facebook')}/>
-        <EditorUrlInput label="The url of your Google+ page" {...bindProperty('googleplus')}/>
-        <EditorUrlInput label="The url of your Twitter page" {...bindProperty('twitter')}/>
-        <EditorUrlInput label="The url of your Yelp page" {...bindProperty('yelp')}/>
-        <EditorUrlInput label="The url of your Foursquare page" {...bindProperty('foursquare')}/>
+      <form className='mdl-grid'>
+        <EditorInput label='The name of your organization' {...this.bindProperty('name')} />
+        <EditorUrlInput label='The url of your website' {...this.bindProperty('url')} />
+        <EditorUrlInput label='The url of your blog' {...this.bindProperty('blog')} />
+        <EditorUrlInput label='The url of your Facebook page' {...this.bindProperty('facebook')} />
+        <EditorUrlInput label='The url of your Google+ page' {...this.bindProperty('googleplus')} />
+        <EditorUrlInput label='The url of your Twitter page' {...this.bindProperty('twitter')} />
+        <EditorUrlInput label='The url of your Yelp page' {...this.bindProperty('yelp')} />
+        <EditorUrlInput label='The url of your Foursquare page' {...this.bindProperty('foursquare')} />
       </form>
     );
   }
-});
+}
 
 export default Editor;
