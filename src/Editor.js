@@ -1,8 +1,7 @@
-import React from 'react';
-import classnames from 'classnames';
+import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 
-var EditorInput = props => {
+function EditorInput (props) {
   return (
     <TextField
       label={props.label}
@@ -11,10 +10,10 @@ var EditorInput = props => {
       {...props}
     />
   );
-};
+}
 
-var EditorUrlInput = ({ value, ...props }) => {
-  var urlPattern = /^[a-z][a-z\d.+-]*:\/*(?:[^:@]+(?::[^@]+)?@)?(?:[^\s:/?#]+|\[[a-f\d:]+\])(?::\d+)?(?:\/[^?#]*)?(?:\?[^#]*)?(?:#.*)?$/i;
+function EditorUrlInput ({ value, ...props }) {
+  const urlPattern = /^[a-z][a-z\d.+-]*:\/*(?:[^:@]+(?::[^@]+)?@)?(?:[^\s:/?#]+|\[[a-f\d:]+\])(?::\d+)?(?:\/[^?#]*)?(?:\?[^#]*)?(?:#.*)?$/i;
   const isValid = value ? urlPattern.test(value) : true;
   const helperText = isValid ? null : 'This is not a valid url';
   return (
@@ -24,90 +23,79 @@ var EditorUrlInput = ({ value, ...props }) => {
       pattern={urlPattern} {...props}
     />
   );
-};
+}
 
-class Editor extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      name: this.props.name || 'ACME',
-      url: this.props.url || 'http://www.acme.org',
-      blog: '',
-      facebook: '',
-      googleplus: '',
-      twitter: '',
-      yelp: '',
-      foursquare: ''
-    };
-    this.onChange = this.onChange.bind(this);
-    this.bindProperty = this.bindProperty.bind(this);
-  }
+function useMetadataInputs (initialValues, onChange) {
+  const [state, setState] = useState(initialValues);
 
-  onChange (event) {
-    var property = event.target.name;
-    var value = event.target.value;
-    this.setState({ [property]: value }, () => {
-      this.props.onChange(this.state);
-    });
-  }
-
-  generateJsonld () {
-    var result = [];
-    if (this.state.blog) {
+  function generateJsonld () {
+    const result = [];
+    if (state.blog) {
       result.push({
         '@context': 'http://schema.org',
         '@type': 'Blog',
-        url: this.state.blog
+        url: state.blog
       });
     }
-    var sameAs = [
-      this.state.facebook,
-      this.state.googleplus,
-      this.state.twitter,
-      this.state.yelp,
-      this.state.foursquare
+    const sameAs = [
+      state.facebook,
+      state.googleplus,
+      state.twitter,
+      state.yelp,
+      state.foursquare
     ].filter(x => x);
     if (sameAs.length > 0) {
       result.push({
         '@context': 'http://schema.org',
         '@type': 'Organization',
-        name: this.state.name,
-        url: this.state.url,
+        name: state.name,
+        url: state.url,
         sameAs: sameAs
       });
     }
     return result;
   }
 
-  setProperty (name, value) {
-    this.setState({ [name]: value }, () => {
-      const jsonld = this.generateJsonld();
-      this.props.onChange(jsonld);
-    });
-  }
+  useEffect(() => {
+    const jsonld = generateJsonld();
+    onChange(jsonld);
+  }, [ state ]);
 
-  bindProperty (property) {
-    return {
-      value: this.state[property],
-      onChange: e => this.setProperty(property, e.target.value)
+  return Object.keys(initialValues).reduce((result, name) => {
+    result[name] = {
+      value: state[name],
+      onChange: e => {
+        setState({ ...state, [name]: e.target.value });
+      }
     };
-  }
+    return result;
+  }, {});
+}
 
-  render () {
-    const { className } = this.props;
-    return (
-      <form className={classnames('mdl-grid', className)}>
-        <EditorInput label='The name of your organization' {...this.bindProperty('name')} />
-        <EditorUrlInput label='The url of your website' {...this.bindProperty('url')} />
-        <EditorUrlInput label='The url of your blog' {...this.bindProperty('blog')} />
-        <EditorUrlInput label='The url of your Facebook page' {...this.bindProperty('facebook')} />
-        <EditorUrlInput label='The url of your Google+ page' {...this.bindProperty('googleplus')} />
-        <EditorUrlInput label='The url of your Twitter page' {...this.bindProperty('twitter')} />
-        <EditorUrlInput label='The url of your Yelp page' {...this.bindProperty('yelp')} />
-        <EditorUrlInput label='The url of your Foursquare page' {...this.bindProperty('foursquare')} />
-      </form>
-    );
-  }
+function Editor (props) {
+  const inputs = useMetadataInputs({
+    name: props.name || 'ACME',
+    url: props.url || 'http://www.acme.org',
+    blog: '',
+    facebook: '',
+    googleplus: '',
+    twitter: '',
+    yelp: '',
+    foursquare: ''
+  }, props.onChange);
+
+  return (
+    <form className={props.className}>
+      <EditorInput label='The name of your organization' {...inputs['name']} />
+      <EditorUrlInput label='The url of your website' {...inputs['url']} />
+      <EditorUrlInput label='The url of your blog' {...inputs['blog']} />
+      <EditorUrlInput label='The url of your Facebook page' {...inputs['facebook']} />
+      <EditorUrlInput label='The url of your Google+ page' {...inputs['googleplus']} />
+      <EditorUrlInput label='The url of your Twitter page' {...inputs['twitter']} />
+      <EditorUrlInput label='The url of your Yelp page' {...inputs['yelp']} />
+      <EditorUrlInput label='The url of your Foursquare page' {...inputs['foursquare']} />
+    </form>
+  );
 }
 
 export default Editor;

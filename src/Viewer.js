@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Prism from 'prismjs';
 import indent from 'indent';
 import clipboard from 'clipboard-js';
@@ -14,35 +14,28 @@ import Switch from '@material-ui/core/Switch';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
-class Viewer extends React.Component {
-  constructor (props) {
-    super(props);
-    this.codeRef = React.createRef();
-    this.state = {
-      showNotification: false,
-      minified: false
-    };
-    this.copyToClipboard = this.copyToClipboard.bind(this);
-    this.closeNotification = this.closeNotification.bind(this);
-  }
+function Markup ({ markup, async }) {
+  const codeRef = useRef();
 
-  hightlight () {
-    Prism.highlightElement(this.codeRef.current, this.props.async);
-  }
+  useEffect(() => Prism.highlightElement(codeRef.current, async), [ markup ]);
 
-  componentDidMount () {
-    this.hightlight();
-  }
+  return (
+    <pre>
+      <code ref={codeRef} className='language-markup'>{markup}</code>
+    </pre>
+  );
+}
 
-  componentDidUpdate () {
-    this.hightlight();
-  }
+function Viewer ({ className, jsonld, async, ...props }) {
+  const [ showNotification, setShowNotification ] = useState(false);
+  const [ minified, setMinified ] = useState(false);
+  const [ markup, setMarkup ] = useState(false);
 
-  renderMarkup () {
-    if (this.props.jsonld.length > 0) {
-      var joinChar = this.state.minified ? '' : '\n';
-      var indentation = this.state.minified ? 0 : 2;
-      return this.props.jsonld.map(object => {
+  function renderMarkup (jsonld = [], minified = false) {
+    if (jsonld.length > 0) {
+      var joinChar = minified ? '' : '\n';
+      var indentation = minified ? 0 : 2;
+      return jsonld.map(object => {
         return [
           '<script type="application/ld+json">',
           indent(JSON.stringify(object, null, indentation), indentation),
@@ -54,57 +47,56 @@ class Viewer extends React.Component {
     }
   }
 
-  copyToClipboard () {
-    return clipboard.copy(this.renderMarkup())
-      .then(() => {
-        this.setState({ showNotification: true });
-      });
+  useEffect(() => {
+    const markup = renderMarkup(jsonld, minified);
+    setMarkup(markup);
+  }, [ jsonld, minified ]);
+
+  async function copyToClipboard () {
+    await clipboard.copy(markup);
+    setShowNotification(true);
   }
 
-  closeNotification () {
-    this.setState({ showNotification: false });
+  function closeNotification () {
+    setShowNotification(false);
   }
 
-  render () {
-    var clipboardEnabled = this.props.jsonld.length > 0;
-    const { className } = this.props;
-    return (
-      <div className={classnames(className)}>
-        <Toolbar disableGutters>
-          <div style={{ flexGrow: 1 }} />
-          <FormControlLabel
-            label='Minified'
-            control={
-              <Switch
-                value={this.state.minified}
-                onChange={e => this.setState({ minified: e.target.checked })}
-              />
-            }
-          />
-          <Button variant='outlined' onClick={this.copyToClipboard} disabled={!clipboardEnabled}>
-            Copy to clipboard
-          </Button>
-        </Toolbar>
-        <pre>
-          <code ref={this.codeRef} className='language-markup'>{this.renderMarkup()}</code>
-        </pre>
-        <Snackbar
-          action={
-            <IconButton
-              color='inherit'
-              onClick={this.closeNotification}
-            >
-              <CloseIcon />
-            </IconButton>
+  const clipboardEnabled = jsonld.length > 0;
+
+  return (
+    <div className={classnames(className)}>
+      <Toolbar disableGutters>
+        <div style={{ flexGrow: 1 }} />
+        <FormControlLabel
+          label='Minified'
+          control={
+            <Switch
+              value={minified}
+              onChange={e => setMinified(e.target.checked)}
+            />
           }
-          open={this.state.showNotification}
-          autoHideDuration={3000}
-          onClose={this.closeNotification}
-          message='Your snippet has been copied to the clipboard.'
         />
-      </div>
-    );
-  }
+        <Button variant='outlined' onClick={copyToClipboard} disabled={!clipboardEnabled}>
+          Copy to clipboard
+        </Button>
+      </Toolbar>
+      <Markup markup={markup} async={props.async} />
+      <Snackbar
+        action={
+          <IconButton
+            color='inherit'
+            onClick={closeNotification}
+          >
+            <CloseIcon />
+          </IconButton>
+        }
+        open={showNotification}
+        autoHideDuration={3000}
+        onClose={closeNotification}
+        message='Your snippet has been copied to the clipboard.'
+      />
+    </div>
+  );
 }
 
 export default Viewer;

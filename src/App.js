@@ -59,7 +59,7 @@ const styles = theme => ({
     padding: theme.spacing.unit * 2
   },
   viewer: {
-    flex: 1,
+    flex: 2,
     overflow: 'auto',
     padding: theme.spacing.unit * 2
   }
@@ -67,10 +67,6 @@ const styles = theme => ({
 
 function App ({ classes }) {
   const [jsonld, setJsonld] = useState([]);
-
-  function onChange (newValues) {
-    setJsonld(newValues);
-  }
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -93,7 +89,7 @@ function App ({ classes }) {
           <Editor
             className={classes.editor}
             {...initialValues}
-            onChange={onChange}
+            onChange={setJsonld}
           />
           <Viewer
             className={classes.viewer}
