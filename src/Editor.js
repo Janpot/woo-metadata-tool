@@ -1,23 +1,28 @@
 import React from 'react';
-import Textfield from 'react-mdl/lib/Textfield';
+import classnames from 'classnames';
+import TextField from '@material-ui/core/TextField';
 
 var EditorInput = props => {
   return (
-    <div className='mdl-cell mdl-cell--12-col'>
-      <Textfield
-        className='mdl-textfield--full-width'
-        label={props.label}
-        floatingLabel
-        {...props}
-      />
-    </div>
+    <TextField
+      label={props.label}
+      fullWidth
+      margin='normal'
+      {...props}
+    />
   );
 };
 
-var EditorUrlInput = props => {
-  var urlPattern = /^[a-z][a-z\d.+-]*:\/*(?:[^:@]+(?::[^@]+)?@)?(?:[^\s:/?#]+|\[[a-f\d:]+\])(?::\d+)?(?:\/[^?#]*)?(?:\?[^#]*)?(?:#.*)?$/i.source;
+var EditorUrlInput = ({ value, ...props }) => {
+  var urlPattern = /^[a-z][a-z\d.+-]*:\/*(?:[^:@]+(?::[^@]+)?@)?(?:[^\s:/?#]+|\[[a-f\d:]+\])(?::\d+)?(?:\/[^?#]*)?(?:\?[^#]*)?(?:#.*)?$/i;
+  const isValid = value ? urlPattern.test(value) : true;
+  const helperText = isValid ? null : 'This is not a valid url';
   return (
-    <EditorInput error='This is not a valid url' pattern={urlPattern} {...props} />
+    <EditorInput
+      error={!isValid}
+      helperText={helperText}
+      pattern={urlPattern} {...props}
+    />
   );
 };
 
@@ -89,8 +94,9 @@ class Editor extends React.Component {
   }
 
   render () {
+    const { className } = this.props;
     return (
-      <form className='mdl-grid'>
+      <form className={classnames('mdl-grid', className)}>
         <EditorInput label='The name of your organization' {...this.bindProperty('name')} />
         <EditorUrlInput label='The url of your website' {...this.bindProperty('url')} />
         <EditorUrlInput label='The url of your blog' {...this.bindProperty('blog')} />

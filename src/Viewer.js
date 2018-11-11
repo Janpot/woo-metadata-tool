@@ -1,17 +1,23 @@
 import React from 'react';
 import Prism from 'prismjs';
 import indent from 'indent';
-import Button from 'react-mdl/lib/Button';
-import Checkbox from 'react-mdl/lib/Checkbox';
-import Snackbar from 'react-mdl/lib/Snackbar';
 import clipboard from 'clipboard-js';
+import classnames from 'classnames';
 import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 class Viewer extends React.Component {
   constructor (props) {
     super(props);
+    this.codeRef = React.createRef();
     this.state = {
       showNotification: false,
       minified: false
@@ -21,7 +27,7 @@ class Viewer extends React.Component {
   }
 
   hightlight () {
-    Prism.highlightElement(this.refs.code, this.props.async);
+    Prism.highlightElement(this.codeRef.current, this.props.async);
   }
 
   componentDidMount () {
@@ -61,27 +67,41 @@ class Viewer extends React.Component {
 
   render () {
     var clipboardEnabled = this.props.jsonld.length > 0;
+    const { className } = this.props;
     return (
-      <div>
-        <div className='mdl-layout__header-row'>
-          <div className='mdl-layout-spacer' />
-          <div style={{ marginRight: '10px' }}>
-            <Checkbox label='Minify' checked={this.state.minified} onChange={e => this.setState({ minified: e.target.checked })} />
-          </div>
-          <Button raised ripple onClick={this.copyToClipboard} disabled={!clipboardEnabled}>
+      <div className={classnames(className)}>
+        <Toolbar disableGutters>
+          <div style={{ flexGrow: 1 }} />
+          <FormControlLabel
+            label='Minified'
+            control={
+              <Switch
+                value={this.state.minified}
+                onChange={e => this.setState({ minified: e.target.checked })}
+              />
+            }
+          />
+          <Button variant='outlined' onClick={this.copyToClipboard} disabled={!clipboardEnabled}>
             Copy to clipboard
           </Button>
-        </div>
+        </Toolbar>
         <pre>
-          <code ref='code' className='language-markup'>{this.renderMarkup()}</code>
+          <code ref={this.codeRef} className='language-markup'>{this.renderMarkup()}</code>
         </pre>
         <Snackbar
-          action='Ok'
-          onActionClick={this.closeNotification}
-          active={this.state.showNotification}
-          onTimeout={this.closeNotification}>
-            Your snippet has been copied to the clipboard.
-        </Snackbar>
+          action={
+            <IconButton
+              color='inherit'
+              onClick={this.closeNotification}
+            >
+              <CloseIcon />
+            </IconButton>
+          }
+          open={this.state.showNotification}
+          autoHideDuration={3000}
+          onClose={this.closeNotification}
+          message='Your snippet has been copied to the clipboard.'
+        />
       </div>
     );
   }

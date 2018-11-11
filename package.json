@@ -8,13 +8,15 @@
   },
   "homepage": "http://janpot.github.io/woo-metadata-tool",
   "dependencies": {
+    "@material-ui/core": "^3.4.0",
+    "@material-ui/icons": "^3.0.1",
+    "classnames": "^2.2.6",
     "clipboard-js": "^0.3.6",
     "indent": "0.0.2",
     "prismjs": "^1.15.0",
     "query-string": "^6.2.0",
-    "react": "^16.6.1",
-    "react-dom": "^16.6.1",
-    "react-mdl": "^1.11.0"
+    "react": "^16.7.0-alpha.0",
+    "react-dom": "^16.7.0-alpha.0"
   },
   "scripts": {
     "start": "react-scripts start",
