@@ -1,19 +1,19 @@
 self.__precacheManifest = [
   {
-    "revision": "d4954ea88925c791ee37",
-    "url": "/woo-metadata-tool/static/css/main.0f01fc6b.chunk.css"
+    "revision": "3181207b5c01676cfcf8",
+    "url": "/woo-metadata-tool/static/css/main.2e31f15b.chunk.css"
   },
   {
-    "revision": "d4954ea88925c791ee37",
-    "url": "/woo-metadata-tool/static/js/main.d4954ea8.chunk.js"
+    "revision": "3181207b5c01676cfcf8",
+    "url": "/woo-metadata-tool/static/js/main.3181207b.chunk.js"
   },
   {
-    "revision": "ae3db91c8f4877a5986a",
-    "url": "/woo-metadata-tool/static/css/1.139b14bc.chunk.css"
+    "revision": "1afaf6851a174f936fa6",
+    "url": "/woo-metadata-tool/static/css/1.143692f0.chunk.css"
   },
   {
-    "revision": "ae3db91c8f4877a5986a",
-    "url": "/woo-metadata-tool/static/js/1.ae3db91c.chunk.js"
+    "revision": "1afaf6851a174f936fa6",
+    "url": "/woo-metadata-tool/static/js/1.1afaf685.chunk.js"
   },
   {
     "revision": "3abdb536be39b093a9a3",
@@ -28,7 +28,7 @@ self.__precacheManifest = [
     "url": "/woo-metadata-tool/static/media/woorank-logo.29dc8cca.svg"
   },
   {
-    "revision": "74d30aff4a5047528c95ac4bef0e81d6",
+    "revision": "81a6ae8373893d9f1b947479628af381",
     "url": "/woo-metadata-tool/index.html"
   }
 ];
