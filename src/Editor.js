@@ -72,7 +72,7 @@ function useMetadataInputs (initialValues, onChange) {
   }, {});
 }
 
-function Editor (props) {
+export default function Editor (props) {
   const inputs = useMetadataInputs({
     name: props.name || 'ACME',
     url: props.url || 'http://www.acme.org',
@@ -97,5 +97,3 @@ function Editor (props) {
     </form>
   );
 }
-
-export default Editor;

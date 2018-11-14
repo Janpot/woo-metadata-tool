@@ -26,7 +26,7 @@ function Markup ({ markup, async }) {
   );
 }
 
-function Viewer ({ className, jsonld, async, ...props }) {
+export default function Viewer ({ className, jsonld, async, ...props }) {
   const [ showNotification, setShowNotification ] = useState(false);
   const [ minified, setMinified ] = useState(false);
   const [ markup, setMarkup ] = useState(false);
@@ -98,5 +98,3 @@ function Viewer ({ className, jsonld, async, ...props }) {
     </div>
   );
 }
-
-export default Viewer;
