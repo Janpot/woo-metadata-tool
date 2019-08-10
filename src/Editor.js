@@ -30,13 +30,6 @@ function useMetadataInputs (initialValues, onChange) {
 
   function generateJsonld () {
     const result = [];
-    if (state.blog) {
-      result.push({
-        '@context': 'http://schema.org',
-        '@type': 'Blog',
-        url: state.blog
-      });
-    }
     const sameAs = [
       state.facebook,
       state.googleplus,
@@ -76,7 +69,6 @@ export default function Editor (props) {
   const inputs = useMetadataInputs({
     name: props.name || 'ACME',
     url: props.url || 'http://www.acme.org',
-    blog: '',
     facebook: '',
     googleplus: '',
     twitter: '',
@@ -88,7 +80,6 @@ export default function Editor (props) {
     <form className={props.className}>
       <EditorInput label='The name of your organization' {...inputs['name']} />
       <EditorUrlInput label='The url of your website' {...inputs['url']} />
-      <EditorUrlInput label='The url of your blog' {...inputs['blog']} />
       <EditorUrlInput label='The url of your Facebook page' {...inputs['facebook']} />
       <EditorUrlInput label='The url of your Google+ page' {...inputs['googleplus']} />
       <EditorUrlInput label='The url of your Twitter page' {...inputs['twitter']} />
