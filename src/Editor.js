@@ -25,66 +25,86 @@ function EditorUrlInput ({ value, ...props }) {
   );
 }
 
-function useMetadataInputs (initialValues, onChange) {
-  const [state, setState] = useState(initialValues);
+function useJsonldInput (initial) {
+  const [value, setValue] = useState(initial);
+  return {
+    value,
+    onChange: e => setValue(e.target.value)
+  };
+}
 
-  function generateJsonld () {
-    const result = [];
-    const sameAs = [
-      state.facebook,
-      state.googleplus,
-      state.twitter,
-      state.yelp,
-      state.foursquare
-    ].filter(x => x);
-    if (sameAs.length > 0) {
-      result.push({
-        '@context': 'http://schema.org',
-        '@type': 'Organization',
-        name: state.name,
-        url: state.url,
-        sameAs: sameAs
-      });
-    }
-    return result;
-  }
+function useJsonldEditor (onChange) {
+  const nameInput = useJsonldInput('ACME');
+  const urlInput = useJsonldInput('http://www.acme.org');
+  const facebookInput = useJsonldInput('');
+  const googleplusInput = useJsonldInput('');
+  const twitterInput = useJsonldInput('');
+  const yelpInput = useJsonldInput('');
+  const foursquareInput = useJsonldInput('');
+  const linkedinInput = useJsonldInput('');
 
   useEffect(() => {
-    const jsonld = generateJsonld();
-    onChange(jsonld);
-  }, [ state ]);
-
-  return Object.keys(initialValues).reduce((result, name) => {
-    result[name] = {
-      value: state[name],
-      onChange: e => {
-        setState({ ...state, [name]: e.target.value });
+    onChange([
+      {
+        '@context': 'http://schema.org',
+        '@type': 'Organization',
+        name: nameInput.value,
+        url: urlInput.value,
+        sameAs: [
+          facebookInput.value,
+          googleplusInput.value,
+          twitterInput.value,
+          yelpInput.value,
+          foursquareInput.value,
+          linkedinInput.value
+        ].filter(Boolean)
       }
-    };
-    return result;
-  }, {});
+    ]);
+  }, [
+    nameInput.value,
+    urlInput.value,
+    facebookInput.value,
+    googleplusInput.value,
+    twitterInput.value,
+    yelpInput.value,
+    foursquareInput.value,
+    linkedinInput.value
+  ]);
+
+  return {
+    nameInput,
+    urlInput,
+    facebookInput,
+    googleplusInput,
+    twitterInput,
+    yelpInput,
+    foursquareInput,
+    linkedinInput
+  };
 }
 
 export default function Editor (props) {
-  const inputs = useMetadataInputs({
-    name: props.name || 'ACME',
-    url: props.url || 'http://www.acme.org',
-    facebook: '',
-    googleplus: '',
-    twitter: '',
-    yelp: '',
-    foursquare: ''
-  }, props.onChange);
+  const {
+    nameInput,
+    urlInput,
+    facebookInput,
+    googleplusInput,
+    twitterInput,
+    yelpInput,
+    foursquareInput,
+    linkedinInput
+  } = useJsonldEditor(props.onChange);
 
   return (
     <form className={props.className}>
-      <EditorInput label='The name of your organization' {...inputs['name']} />
-      <EditorUrlInput label='The url of your website' {...inputs['url']} />
-      <EditorUrlInput label='The url of your Facebook page' {...inputs['facebook']} />
-      <EditorUrlInput label='The url of your Google+ page' {...inputs['googleplus']} />
-      <EditorUrlInput label='The url of your Twitter page' {...inputs['twitter']} />
-      <EditorUrlInput label='The url of your Yelp page' {...inputs['yelp']} />
-      <EditorUrlInput label='The url of your Foursquare page' {...inputs['foursquare']} />
+      <EditorInput label='The name of your organization' {...nameInput} />
+      <EditorUrlInput label='The url of your website' {...urlInput} />
+      <EditorUrlInput label='The url of your Facebook page' {...facebookInput} />
+      <EditorUrlInput label='The url of your Google+ page' {...googleplusInput} />
+      <EditorUrlInput label='The url of your Twitter page' {...twitterInput} />
+      <EditorUrlInput label='The url of your Yelp page' {...yelpInput} />
+      <EditorUrlInput label='The url of your Foursquare page' {...foursquareInput} />
+      <EditorUrlInput label='The url of your LinkedIn page' {...linkedinInput} />
     </form>
   );
 }
