@@ -41,12 +41,12 @@ const useStyles = makeStyles(theme => ({
   editor: {
     flex: 1,
     overflow: 'auto',
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   },
   viewer: {
     flex: 2,
     overflow: 'auto',
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing(2)
   }
 }));
 
