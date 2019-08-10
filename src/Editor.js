@@ -36,6 +36,7 @@ function useJsonldInput (initial) {
 function useJsonldEditor (onChange) {
   const nameInput = useJsonldInput('ACME');
   const urlInput = useJsonldInput('http://www.acme.org');
+  const addressInput = useJsonldInput('');
   const facebookInput = useJsonldInput('');
   const googleplusInput = useJsonldInput('');
   const twitterInput = useJsonldInput('');
@@ -50,6 +51,7 @@ function useJsonldEditor (onChange) {
         '@type': 'Organization',
         name: nameInput.value,
         url: urlInput.value,
+        address: addressInput.value,
         sameAs: [
           facebookInput.value,
           googleplusInput.value,
@@ -63,6 +65,7 @@ function useJsonldEditor (onChange) {
   }, [
     nameInput.value,
     urlInput.value,
+    addressInput.value,
     facebookInput.value,
     googleplusInput.value,
     twitterInput.value,
@@ -74,6 +77,7 @@ function useJsonldEditor (onChange) {
   return {
     nameInput,
     urlInput,
+    addressInput,
     facebookInput,
     googleplusInput,
     twitterInput,
@@ -87,6 +91,7 @@ export default function Editor (props) {
   const {
     nameInput,
     urlInput,
+    addressInput,
     facebookInput,
     googleplusInput,
     twitterInput,
@@ -99,6 +104,7 @@ export default function Editor (props) {
     <form className={props.className}>
       <EditorInput label='The name of your organization' {...nameInput} />
       <EditorUrlInput label='The url of your website' {...urlInput} />
+      <EditorInput label='Your address' {...addressInput} />
       <EditorUrlInput label='The url of your Facebook page' {...facebookInput} />
       <EditorUrlInput label='The url of your Google+ page' {...googleplusInput} />
       <EditorUrlInput label='The url of your Twitter page' {...twitterInput} />
