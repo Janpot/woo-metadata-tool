@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import Viewer from './Viewer';
-import Editor from './Editor';
-import queryString from 'query-string';
+import Viewer from '../src/Viewer';
+import Editor from '../src/Editor';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,20 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/styles';
 
-import { ReactComponent as GithubLogo } from './img/github-logo.svg';
-import { ReactComponent as WoorankLogo } from './img/woorank-logo.svg';
-
-function parseQuery () {
-  var { url } = queryString.parse(window.location.search);
-  if (url) {
-    url = /https?:\/\//.test(url) ? url : `http://${url}`;
-    var [ , name ] = /https?:\/\/(?:www\.)?([^.]+)/.exec(url) || [];
-    return { name, url };
-  }
-  return null;
-}
-
-var initialValues = parseQuery();
+import GithubLogo from '../src/img/github-logo.svg';
+import WoorankLogo from '../src/img/woorank-logo.svg';
 
 const useStyles = makeStyles(theme => ({
   headerIcon: {
@@ -50,21 +37,33 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function App () {
-  const [jsonld, setJsonld] = useState([]);
+export default function Index({ initialValues }) {
+  const [jsonld, setJsonld] = useState({
+    '@context': 'http://schema.org',
+    '@type': 'Organization',
+    name: 'ACME',
+    url: 'http://www.acme.org',
+    address: '',
+    sameAs: [],
+    ...initialValues
+  });
+
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <AppBar position='static' color='primary'>
+      <AppBar position="static" color="primary">
         <Toolbar>
-          <Typography variant='h6' color='inherit' style={{ flexGrow: 1 }}>
+          <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
             WooRank Metadata Tool
           </Typography>
-          <IconButton color='inherit' href='https://github.com/janpot/woo-metadata-tool'>
+          <IconButton
+            color="inherit"
+            href="https://github.com/janpot/woo-metadata-tool"
+          >
             <GithubLogo className={classes.headerIcon} />
           </IconButton>
-          <IconButton color='inherit' href='https://www.woorank.com'>
+          <IconButton color="inherit" href="https://www.woorank.com">
             <WoorankLogo className={classes.headerIcon} />
           </IconButton>
         </Toolbar>
@@ -73,13 +72,27 @@ export default function App () {
         <Editor
           className={classes.editor}
           {...initialValues}
+          value={jsonld}
           onChange={setJsonld}
         />
-        <Viewer
-          className={classes.viewer}
-          jsonld={jsonld}
-        />
+        <Viewer className={classes.viewer} jsonld={[jsonld]} />
       </div>
     </div>
   );
 }
+
+function parseQuery(query) {
+  let url = query.url;
+  if (query.url) {
+    url = /https?:\/\//.test(query.url) ? query.url : `https://${query.url}`;
+    var [, name] = /https?:\/\/(?:www\.)?([^.]+)/.exec(url) || [];
+    return { name, url };
+  }
+  return null;
+}
+
+Index.getInitialProps = ({ query }) => {
+  return {
+    initialValues: parseQuery(query)
+  };
+};
