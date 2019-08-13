@@ -9,7 +9,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import SyntaxHighlighter from 'react-syntax-highlighter';
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import markup from 'react-syntax-highlighter/dist/cjs/languages/prism/markup';
+import prism from 'react-syntax-highlighter/dist/cjs/styles/prism/prism';
+SyntaxHighlighter.registerLanguage('markup', markup);
 
 export default function Viewer({ className, jsonld, async, ...props }) {
   const [showNotification, setShowNotification] = useState(false);
@@ -71,7 +74,9 @@ export default function Viewer({ className, jsonld, async, ...props }) {
           Copy to clipboard
         </Button>
       </Toolbar>
-      <SyntaxHighlighter language="markup">{markup}</SyntaxHighlighter>
+      <SyntaxHighlighter language="markup" style={prism}>
+        {markup}
+      </SyntaxHighlighter>
       <Snackbar
         action={
           <IconButton color="inherit" onClick={closeNotification}>
