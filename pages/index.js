@@ -39,8 +39,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function Index({ initialValues }) {
   const [jsonld, setJsonld] = useState({
-    '@context': 'http://schema.org',
-    '@type': 'Organization',
     name: 'ACME',
     url: 'http://www.acme.org',
     address: '',
@@ -75,7 +73,7 @@ export default function Index({ initialValues }) {
           value={jsonld}
           onChange={setJsonld}
         />
-        <Viewer className={classes.viewer} jsonld={[jsonld]} />
+        <Viewer className={classes.viewer} jsonld={jsonld} />
       </div>
     </div>
   );

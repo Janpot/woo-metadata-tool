@@ -19,19 +19,26 @@ export default function Viewer({ className, jsonld, async, ...props }) {
   const [minified, setMinified] = useState(false);
   const [markup, setMarkup] = useState(renderMarkup(jsonld));
 
-  function renderMarkup(jsonld = [], minified = false) {
-    if (jsonld.length > 0) {
+  function renderMarkup(jsonld = null, minified = false) {
+    if (jsonld) {
       var joinChar = minified ? '' : '\n';
       var indentation = minified ? 0 : 2;
-      return jsonld
-        .map(object => {
-          return [
-            '<script type="application/ld+json">',
-            indent(JSON.stringify(object, null, indentation), indentation),
-            '</script>'
-          ].join(joinChar);
-        })
-        .join(joinChar);
+      return [
+        '<script type="application/ld+json">',
+        indent(
+          JSON.stringify(
+            {
+              '@context': 'http://schema.org',
+              '@type': 'Organization',
+              ...jsonld
+            },
+            null,
+            indentation
+          ),
+          indentation
+        ),
+        '</script>'
+      ].join(joinChar);
     } else {
       return '<!-- No input yet -->';
     }
@@ -51,7 +58,7 @@ export default function Viewer({ className, jsonld, async, ...props }) {
     setShowNotification(false);
   }
 
-  const clipboardEnabled = jsonld.length > 0;
+  const clipboardEnabled = jsonld;
 
   return (
     <div className={classnames(className)}>

@@ -14,6 +14,7 @@ function EditorUrlInput({ value, ...props }) {
       error={!isValid}
       helperText={helperText}
       pattern={urlPattern}
+      value={value}
       {...props}
     />
   );
@@ -40,8 +41,6 @@ function useJsonldEditor(jsonld, setJsonld) {
 
   useEffect(() => {
     setJsonld({
-      '@context': 'http://schema.org',
-      '@type': 'Organization',
       name: nameInput.value,
       url: urlInput.value,
       address: addressInput.value,
