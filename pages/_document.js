@@ -18,7 +18,7 @@ class MyDocument extends Document {
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?display=swap&family=Roboto:300,400,500,700&display=swap"
+            href="https://fonts.googleapis.com/css?display=swap&family=Roboto:300,400,500,700"
           />
         </Head>
         <body>
