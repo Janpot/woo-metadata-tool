@@ -80,7 +80,7 @@ export default function Index({ initialValues }) {
 }
 
 function parseQuery(query) {
-  let url = query.url;
+  let { url } = query;
   if (query.url) {
     url = /https?:\/\//.test(query.url) ? query.url : `https://${query.url}`;
     var [, name] = /https?:\/\/(?:www\.)?([^.]+)/.exec(url) || [];
