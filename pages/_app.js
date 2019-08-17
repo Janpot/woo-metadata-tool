@@ -20,7 +20,11 @@ class MyApp extends App {
     return (
       <Container>
         <Head>
-          <title>My page</title>
+          <title>WooRank Metadata Tool</title>
+          <meta
+            name="description"
+            content="Generate your WooRank markup with this tool."
+          />
         </Head>
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
