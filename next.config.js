@@ -8,7 +8,7 @@ module.exports = {
       oneOf: [
         {
           test: /\.svg$/,
-          issuer: /\.(js|jsx)$/,
+          issuer: /\.(js|jsx|ts|tsx)$/,
           use: {
             loader: '@svgr/webpack',
             options: {

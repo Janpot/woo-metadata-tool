@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import Viewer from '../src/Viewer';
+import Viewer, { JsonLd } from '../src/Viewer';
 import Editor from '../src/Editor';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { NextPageContext } from 'next';
 
-import GithubLogo from '../src/img/github-logo.svg';
-import WoorankLogo from '../src/img/woorank-logo.svg';
+const { default: GithubLogo } = require('../src/img/github-logo.svg');
+const { default: WoorankLogo } = require('../src/img/woorank-logo.svg');
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   headerIcon: {
     fill: 'currentColor'
   },
@@ -37,7 +38,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Index({ initialValues }) {
+interface IndexProps {
+  initialValues: Partial<JsonLd>;
+}
+
+export default function Index({ initialValues }: IndexProps) {
   const [jsonld, setJsonld] = useState({
     name: 'ACME',
     url: 'http://www.acme.org',
@@ -79,18 +84,24 @@ export default function Index({ initialValues }) {
   );
 }
 
-function parseQuery(query) {
-  let { url } = query;
-  if (query.url) {
-    url = /https?:\/\//.test(query.url) ? query.url : `https://${query.url}`;
-    var [, name] = /https?:\/\/(?:www\.)?([^.]+)/.exec(url) || [];
-    return { name, url };
+function parseQueryUrl(urlInput: string) {
+  const url = /https?:\/\//.test(urlInput) ? urlInput : `https://${urlInput}`;
+  var [, name = ''] = /https?:\/\/(?:www\.)?([^.]+)/.exec(url) || [];
+  return { name, url };
+}
+
+function parseQuery(ctx: NextPageContext) {
+  let { url } = ctx.query;
+  if (typeof ctx.query.url === 'string') {
+    return parseQueryUrl(ctx.query.url);
+  } else if (Array.isArray(ctx.query.url)) {
+    return parseQueryUrl(ctx.query.url[0]);
   }
   return null;
 }
 
-Index.getInitialProps = ({ query }) => {
+Index.getInitialProps = (ctx: NextPageContext) => {
   return {
-    initialValues: parseQuery(query)
+    initialValues: parseQuery(ctx)
   };
 };

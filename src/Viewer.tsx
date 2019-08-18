@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import indent from 'indent';
 import clipboard from 'clipboard-js';
 import classnames from 'classnames';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,38 +9,58 @@ import Switch from '@material-ui/core/Switch';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+// @ts-ignore
 import markup from 'react-syntax-highlighter/dist/cjs/languages/prism/markup';
+//@ts-ignore
 import prism from 'react-syntax-highlighter/dist/cjs/styles/prism/prism';
+// import markup from 'react-syntax-highlighter/languages/prism/markup'
+// import prism from 'react-syntax-highlighter/dist/styles/prism/prism'
 SyntaxHighlighter.registerLanguage('markup', markup);
 
-export default function Viewer({ className, jsonld, async, ...props }) {
+// TODO: move out of this file
+export interface JsonLd {
+  name: string;
+  url: string;
+  address: string;
+  sameAs: string[];
+}
+
+interface ViewerProps {
+  className: string;
+  jsonld: JsonLd;
+}
+
+function indent(inputStr: string, indentation: number) {
+  return inputStr
+    .split('\n')
+    .map(str => ' '.repeat(indentation) + str)
+    .join('\n');
+}
+
+export default function Viewer({ className, jsonld }: ViewerProps) {
   const [showNotification, setShowNotification] = useState(false);
   const [minified, setMinified] = useState(false);
   const [markup, setMarkup] = useState(renderMarkup(jsonld));
 
-  function renderMarkup(jsonld = null, minified = false) {
-    if (jsonld) {
-      var joinChar = minified ? '' : '\n';
-      var indentation = minified ? 0 : 2;
-      return [
-        '<script type="application/ld+json">',
-        indent(
-          JSON.stringify(
-            {
-              '@context': 'http://schema.org',
-              '@type': 'Organization',
-              ...jsonld
-            },
-            null,
-            indentation
-          ),
+  function renderMarkup(jsonld: JsonLd, minified = false) {
+    var joinChar = minified ? '' : '\n';
+    var indentation = minified ? 0 : 2;
+    return [
+      '<script type="application/ld+json">',
+      indent(
+        JSON.stringify(
+          {
+            '@context': 'http://schema.org',
+            '@type': 'Organization',
+            ...jsonld
+          },
+          null,
           indentation
         ),
-        '</script>'
-      ].join(joinChar);
-    } else {
-      return '<!-- No input yet -->';
-    }
+        indentation
+      ),
+      '</script>'
+    ].join(joinChar);
   }
 
   useEffect(() => {

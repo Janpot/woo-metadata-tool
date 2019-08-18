@@ -4,11 +4,17 @@
   "private": true,
   "devDependencies": {
     "@svgr/webpack": "^4.3.2",
+    "@types/classnames": "^2.2.9",
+    "@types/clipboard-js": "^0.3.2",
+    "@types/gtag.js": "0.0.2",
+    "@types/node": "^12.7.2",
+    "@types/react-syntax-highlighter": "^10.2.1",
     "file-loader": "^4.2.0",
     "gh-pages": "^2.1.1",
     "next": "^9.0.3",
     "now": "^16.1.1",
     "prettier": "^1.18.2",
+    "typescript": "^3.5.3",
     "url-loader": "^2.1.0"
   },
   "homepage": "http://janpot.github.io/woo-metadata-tool",
@@ -18,7 +24,6 @@
     "@material-ui/styles": "^4.3.0",
     "classnames": "^2.2.6",
     "clipboard-js": "^0.3.6",
-    "indent": "0.0.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-syntax-highlighter": "^11.0.2"
@@ -30,7 +35,7 @@
     "export": "npm run build && next export",
     "gh-pages": "gh-pages -d gh-pages",
     "deploy": "now",
-    "format": "prettier --write --single-quote \"{src,pages}/**/*.js\""
+    "format": "prettier --write --single-quote \"{src,pages}/**/*.{js,jsx,ts,tsx}\""
   },
   "license": "MIT",
   "browserslist": [

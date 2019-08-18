@@ -1,34 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import TextField from '@material-ui/core/TextField';
+import TextField, { TextFieldProps } from '@material-ui/core/TextField';
+import { JsonLd } from './Viewer';
 
-function EditorInput(props) {
+function EditorInput(props: TextFieldProps) {
   return <TextField label={props.label} fullWidth margin="normal" {...props} />;
 }
 
-function EditorUrlInput({ value, ...props }) {
+function EditorUrlInput({ value, ...props }: TextFieldProps) {
   const urlPattern = /^[a-z][a-z\d.+-]*:\/*(?:[^:@]+(?::[^@]+)?@)?(?:[^\s:/?#]+|\[[a-f\d:]+\])(?::\d+)?(?:\/[^?#]*)?(?:\?[^#]*)?(?:#.*)?$/i;
-  const isValid = value ? urlPattern.test(value) : true;
+  const isValid =
+    typeof value === 'string' && value ? urlPattern.test(value) : true;
   const helperText = isValid ? null : 'This is not a valid url';
   return (
     <EditorInput
       error={!isValid}
       helperText={helperText}
-      pattern={urlPattern}
       value={value}
       {...props}
     />
   );
 }
 
-function useJsonldInput(initial) {
+function useJsonldInput(initial: string) {
   const [value, setValue] = useState(initial);
   return {
     value,
-    onChange: e => setValue(e.target.value)
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+      setValue(e.target.value)
   };
 }
 
-function useJsonldEditor(jsonld, setJsonld) {
+function useJsonldEditor(jsonld: JsonLd, setJsonld: (jsonLd: JsonLd) => void) {
   const nameInput = useJsonldInput(jsonld.name);
   const urlInput = useJsonldInput(jsonld.url);
   const addressInput = useJsonldInput('');
@@ -78,7 +80,13 @@ function useJsonldEditor(jsonld, setJsonld) {
   };
 }
 
-export default function Editor(props) {
+interface EditorProps {
+  className: string;
+  value: JsonLd;
+  onChange: (jsonLd: JsonLd) => void;
+}
+
+export default function Editor(props: EditorProps) {
   const {
     nameInput,
     urlInput,
