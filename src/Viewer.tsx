@@ -8,6 +8,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import * as analytics from './analytics';
+
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 // @ts-ignore
 import markup from 'react-syntax-highlighter/dist/cjs/languages/prism/markup';
@@ -69,6 +71,7 @@ export default function Viewer({ className, jsonld }: ViewerProps) {
   }, [jsonld, minified]);
 
   async function copyToClipboard() {
+    analytics.event('copy_to_clipboard');
     await clipboard.copy(markup);
     setShowNotification(true);
   }

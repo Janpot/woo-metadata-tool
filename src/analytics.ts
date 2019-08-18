@@ -7,15 +7,14 @@ export function pageview(url: string) {
   });
 }
 
-interface EventConfig {
-  action: string;
-  category: string;
-  label: string;
-  value: string;
+interface EventParams {
+  category?: string;
+  label?: string;
+  value?: string;
 }
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/events
-export function event({ action, category, label, value }: EventConfig) {
+export function event(action: string, { category, label, value }: EventParams = {}) {
   gtag('event', action, {
     event_category: category,
     event_label: label,
