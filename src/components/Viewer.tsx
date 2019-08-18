@@ -8,7 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import * as analytics from '../lib/analytics';
+import * as analytics from '../analytics';
 
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 // @ts-ignore
