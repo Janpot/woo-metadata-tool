@@ -4,6 +4,10 @@ import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
+import Router from 'next/router';
+import * as gtag from '../src/gtag';
+
+Router.events.on('routeChangeComplete', url => gtag.pageview(url));
 
 class MyApp extends App {
   componentDidMount() {
