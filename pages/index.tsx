@@ -92,12 +92,13 @@ function parseQueryUrl(urlInput: string) {
 
 function parseQuery(ctx: NextPageContext) {
   let { url } = ctx.query;
-  if (typeof ctx.query.url === 'string') {
-    return parseQueryUrl(ctx.query.url);
-  } else if (Array.isArray(ctx.query.url)) {
-    return parseQueryUrl(ctx.query.url[0]);
+  if (typeof url === 'string') {
+    return parseQueryUrl(url);
+  } else if (Array.isArray(url)) {
+    return parseQueryUrl(url[0]);
+  } else {
+    return {};
   }
-  return null;
 }
 
 Index.getInitialProps = (ctx: NextPageContext) => {
