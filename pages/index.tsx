@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Viewer, { JsonLd } from '../src/Viewer';
-import Editor from '../src/Editor';
+import Viewer, { JsonLd } from '../components/Viewer';
+import Editor from '../components/Editor';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,8 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { NextPageContext } from 'next';
 
-const { default: GithubLogo } = require('../src/img/github-logo.svg');
-const { default: WoorankLogo } = require('../src/img/woorank-logo.svg');
+const { default: GithubLogo } = require('../images/github-logo.svg');
+const { default: WoorankLogo } = require('../images/woorank-logo.svg');
 
 const useStyles = makeStyles((theme: Theme) => ({
   headerIcon: {
