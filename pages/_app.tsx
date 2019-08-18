@@ -3,9 +3,9 @@ import App, { Container } from 'next/app';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import theme from '../lib/theme';
+import theme from '../src/lib/theme';
 import Router from 'next/router';
-import * as gtag from '../lib/analytics';
+import * as gtag from '../src/lib/analytics';
 
 Router.events.on('routeChangeComplete', url => gtag.pageview(url));
 

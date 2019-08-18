@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Viewer, { JsonLd } from '../components/Viewer';
-import Editor from '../components/Editor';
+import Viewer, { JsonLd } from '../src/components/Viewer';
+import Editor from '../src/components/Editor';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
