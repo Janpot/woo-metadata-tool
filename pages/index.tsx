@@ -9,8 +9,8 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { NextPageContext } from 'next';
 
-const { default: GithubLogo } = require('../images/github-logo.svg');
-const { default: WoorankLogo } = require('../images/woorank-logo.svg');
+import GithubLogo from '../images/github-logo.svg';
+import WoorankLogo from '../images/woorank-logo.svg';
 
 const useStyles = makeStyles((theme: Theme) => ({
   headerIcon: {

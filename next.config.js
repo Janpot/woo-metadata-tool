@@ -25,6 +25,8 @@ module.exports = {
             options: {
               limit: 512,
               fallback: 'file-loader',
+              publicPath: `/_next/static/images/`,
+              outputPath: `static/images/`,
               name: '[name]-[hash].[ext]'
             }
           }
