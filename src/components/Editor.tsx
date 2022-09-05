@@ -35,7 +35,6 @@ function useJsonldEditor(jsonld: JsonLd, setJsonld: (jsonLd: JsonLd) => void) {
   const urlInput = useJsonldInput(jsonld.url);
   const addressInput = useJsonldInput('');
   const facebookInput = useJsonldInput('');
-  const googleplusInput = useJsonldInput('');
   const twitterInput = useJsonldInput('');
   const yelpInput = useJsonldInput('');
   const foursquareInput = useJsonldInput('');
@@ -48,7 +47,6 @@ function useJsonldEditor(jsonld: JsonLd, setJsonld: (jsonLd: JsonLd) => void) {
       address: addressInput.value,
       sameAs: [
         facebookInput.value,
-        googleplusInput.value,
         twitterInput.value,
         yelpInput.value,
         foursquareInput.value,
@@ -60,7 +58,6 @@ function useJsonldEditor(jsonld: JsonLd, setJsonld: (jsonLd: JsonLd) => void) {
     urlInput.value,
     addressInput.value,
     facebookInput.value,
-    googleplusInput.value,
     twitterInput.value,
     yelpInput.value,
     foursquareInput.value,
@@ -72,7 +69,6 @@ function useJsonldEditor(jsonld: JsonLd, setJsonld: (jsonLd: JsonLd) => void) {
     urlInput,
     addressInput,
     facebookInput,
-    googleplusInput,
     twitterInput,
     yelpInput,
     foursquareInput,
@@ -92,7 +88,6 @@ export default function Editor(props: EditorProps) {
     urlInput,
     addressInput,
     facebookInput,
-    googleplusInput,
     twitterInput,
     yelpInput,
     foursquareInput,
@@ -107,10 +102,6 @@ export default function Editor(props: EditorProps) {
       <EditorUrlInput
         label="The url of your Facebook page"
         {...facebookInput}
-      />
-      <EditorUrlInput
-        label="The url of your Google+ page"
-        {...googleplusInput}
       />
       <EditorUrlInput label="The url of your Twitter page" {...twitterInput} />
       <EditorUrlInput label="The url of your Yelp page" {...yelpInput} />
